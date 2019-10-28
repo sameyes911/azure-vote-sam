@@ -25,7 +25,9 @@ pipeline {
 
     stage('trigger deployment') {
         // trigger deployment
-        build 'azure-vote-front-deployment'
+        steps {
+            build 'azure-vote-front-deployment'
+        }
     }
   }
 }
