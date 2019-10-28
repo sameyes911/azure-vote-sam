@@ -1,15 +1,13 @@
 apiVersion: apps/v1beta1
 kind: Deployment
-namespace: demo
 metadata:
   name: azure-vote-front
+  namespace: demo
 spec:
   replicas: 1
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-  minReadySeconds: 5 
+  selector:
+    matchLabels:
+      app: azure-vote-front
   template:
     metadata:
       labels:

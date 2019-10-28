@@ -12,7 +12,7 @@ podTemplate(yaml: './podTemplate.yaml') {
             sh 'docker push rancherlbacr.azurecr.io/azure-vote-front:latest'
         }
         // trigger deployment
-        build 'bookinfo-productpage-deployment'
+        build 'azure-vote-front-deployment'
     }
     
 }
