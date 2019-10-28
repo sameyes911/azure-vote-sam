@@ -1,17 +1,8 @@
-pipeline {
-  agent {
-    kubernetes {
-      yamlFile './podTemplate.yaml'
-    }
-  }
-  stages {
-    stage("pull source code"){
-        steps {
-            git url: 'https://github.com/sameyes911/azure-vote-sam', branch: 'master', credentialsId: "cf748a1ea72c51e5f98f8324059dae4ee355a403"
-        }     
-    }  
-    stage('image build') {
-      steps {
+podTemplate(yaml: './podTemplate.yaml') {
+    node(POD_LABEL) {
+        //pull down the source code
+        git url: 'https://github.com/sameyes911/azure-vote-sam', branch: 'master', credentialsId: "cf748a1ea72c51e5f98f8324059dae4ee355a403"
+
         container('docker') {
             //build image
             sh 'docker build -t rancherlbacr.azurecr.io/azure-vote-front:latest ./azure-vote'
@@ -20,12 +11,8 @@ pipeline {
             // docker image push
             sh 'docker push rancherlbacr.azurecr.io/azure-vote-front:latest'
         }
-      }
-    }
-
-    stage('trigger deployment') {
         // trigger deployment
         build 'azure-vote-front-deployment'
     }
-  }
+    
 }
